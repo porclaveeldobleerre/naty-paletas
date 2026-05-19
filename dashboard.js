@@ -517,7 +517,7 @@ document.querySelectorAll('.nav-link').forEach(function(link) {
     var title = document.getElementById('topbarTitle');
     if (title) title.textContent = link.querySelector('span').textContent;
     renderSection(link.dataset.section);
-    document.getElementById('sidebar').classList.remove('open');
+    _closeSidebar();
   });
 });
 
@@ -540,10 +540,25 @@ if (_logoutTopbar) {
 
 // ===== MENU MÓVIL =====
 var _menuToggle = document.getElementById('menuToggle');
+var _sidebarOverlay = document.getElementById('sidebarOverlay');
+
+function _openSidebar() {
+  document.getElementById('sidebar').classList.add('open');
+  if (_sidebarOverlay) _sidebarOverlay.classList.add('open');
+}
+function _closeSidebar() {
+  document.getElementById('sidebar').classList.remove('open');
+  if (_sidebarOverlay) _sidebarOverlay.classList.remove('open');
+}
+
 if (_menuToggle) {
   _menuToggle.addEventListener('click', function() {
-    document.getElementById('sidebar').classList.toggle('open');
+    var sb = document.getElementById('sidebar');
+    if (sb.classList.contains('open')) { _closeSidebar(); } else { _openSidebar(); }
   });
+}
+if (_sidebarOverlay) {
+  _sidebarOverlay.addEventListener('click', _closeSidebar);
 }
 
 // ===== INIT =====

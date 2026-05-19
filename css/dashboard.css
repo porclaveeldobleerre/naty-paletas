@@ -446,16 +446,107 @@ nav { flex:1; display:flex; flex-direction:column; gap:2px; padding:8px 10px; }
 @keyframes slideIn { from{transform:translateY(14px);opacity:0} to{transform:translateY(0);opacity:1} }
 @keyframes pulse   { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.6;transform:scale(1.15)} }
 
+/* ===== TABLA WRAP AUTO ===== */
+/* Cualquier div que contenga directamente una .tabla tendrá scroll en móvil */
+div:has(> .tabla) { overflow-x:auto; -webkit-overflow-scrolling:touch; }
+
 /* ===== RESPONSIVE ===== */
 @media(max-width:768px){
   :root { --sidebar-w:0px; }
-  .sidebar { transform:translateX(-100%); width:200px; }
-  .sidebar.open { transform:translateX(0); }
+
+  /* Sidebar como drawer con overlay */
+  .sidebar { transform:translateX(-100%); width:220px; box-shadow:none; transition:transform .25s ease; }
+  .sidebar.open { transform:translateX(0); box-shadow:4px 0 32px rgba(0,0,0,0.35); }
+
+  /* Overlay oscuro al abrir sidebar */
+  .sidebar-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.45); z-index:99; }
+  .sidebar-overlay.open { display:block; }
+
   .main { margin-left:0; }
   .menu-toggle { display:flex; }
-  .modal-grid,.grid-2 { grid-template-columns:1fr; }
-  .panel-content { padding:14px; }
-  .topbar { padding:10px 14px; }
-  .user-badge span { display:none; }
+
+  /* Topbar compacta */
+  .topbar { padding:10px 14px; gap:8px; }
+  .topbar h1 { font-size:0.92rem; }
   .topbar-search { display:none; }
+  .user-badge span { display:none; }
+  .user-badge { padding:5px 8px; }
+
+  /* Panel con menos padding */
+  .panel-content { padding:12px; }
+
+  /* Grids a 1 columna */
+  .modal-grid,.grid-2 { grid-template-columns:1fr; }
+
+  /* Tablas con scroll horizontal */
+  .tabla-wrap { overflow-x:auto; -webkit-overflow-scrolling:touch; border-radius:12px; }
+  .tabla { min-width:520px; }
+  .tabla th,.tabla td { padding:8px 10px; font-size:0.78rem; white-space:nowrap; }
+
+  /* KPIs en 2 columnas */
+  .kpis,.insumos-kpis,.prod-resumen {
+    grid-template-columns:repeat(2,1fr);
+    gap:8px;
+  }
+  .kpi-card h4 { font-size:1rem; }
+  .kpi-mini b  { font-size:1.2rem; }
+
+  /* Cards de insumos y recetas a 1 columna */
+  .insumos-lista,.recetas-lista { grid-template-columns:1fr; gap:10px; }
+
+  /* Filtros apilados */
+  .filtros-bar,.filtros { flex-direction:column; gap:8px; }
+  .filtros-bar .buscador,.filtros input { width:100%; min-width:unset; }
+
+  /* Botones de acción más grandes para touch */
+  .btn-primary,.btn-secondary,.btn-outline {
+    padding:10px 16px;
+    font-size:0.85rem;
+    min-height:40px;
+  }
+
+  /* Modal ocupa casi toda la pantalla */
+  .modal-box {
+    max-width:calc(100vw - 24px);
+    margin:12px;
+    padding:18px;
+    max-height:90vh;
+    overflow-y:auto;
+  }
+
+  /* Section header apilado */
+  .section-header { flex-direction:column; align-items:flex-start; gap:10px; }
+  .section-header .btn-primary { width:100%; justify-content:center; }
+
+  /* Tabs con scroll horizontal */
+  .tabs,.tabs-group,.config-tabs {
+    overflow-x:auto;
+    flex-wrap:nowrap;
+    -webkit-overflow-scrolling:touch;
+    padding-bottom:4px;
+    scrollbar-width:none;
+  }
+  .tabs::-webkit-scrollbar,.tabs-group::-webkit-scrollbar,.config-tabs::-webkit-scrollbar { display:none; }
+  .tab,.tab-btn { white-space:nowrap; flex-shrink:0; }
+
+  /* Config a 1 columna */
+  .config-container { max-width:100%; }
+  .config-header { flex-direction:column; gap:10px; }
+
+  /* Toast abajo centrado */
+  .toast { left:12px; right:12px; bottom:12px; font-size:0.8rem; }
+
+  /* Prod header apilado */
+  .prod-header { flex-direction:column; align-items:flex-start; gap:8px; }
+
+  /* Acciones en receta card */
+  .receta-top { flex-wrap:wrap; gap:6px; }
+
+  /* Notif dropdown más angosto */
+  .notif-dropdown { width:calc(100vw - 24px); right:-60px; }
+}
+
+@media(max-width:400px){
+  .kpis,.insumos-kpis,.prod-resumen { grid-template-columns:1fr; }
+  .topbar h1 { font-size:0.82rem; }
 }
