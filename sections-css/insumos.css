@@ -1,0 +1,139 @@
+/* ================= INSUMOS ================= */
+
+/* HEADER */
+.insumos-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.insumos-header h2 {
+  color: #0f172a;
+  font-weight: 900;
+}
+
+/* KPIs */
+.insumos-kpis {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 16px;
+  margin: 20px 0;
+}
+
+.kpi-card {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 16px;
+  text-align: center;
+  box-shadow: 0 10px 25px rgba(0,0,0,.06);
+}
+
+.kpi-card b {
+  font-size: 28px;
+  font-weight: 900;
+  display: block;
+}
+
+.kpi-card span {
+  font-size: 13px;
+  font-weight: 600;
+  color: #475569;
+}
+
+.kpi-card.critico b { color: #dc2626; }
+.kpi-card.alerta  b { color: #f59e0b; }
+.kpi-card.ok      b { color: #16a34a; }
+
+/* FILTROS */
+.insumos-filtros {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 20px 0;
+}
+
+.tabs button {
+  background: #f1f5f9;
+  border: none;
+  color: #334155;
+  padding: 8px 14px;
+  margin-right: 6px;
+  border-radius: 12px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.tabs button.active {
+  background: linear-gradient(135deg,#ec4899,#8b5cf6,#22d3ee);
+  color: #fff;
+}
+
+.buscador {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  padding: 8px 14px;
+  border-radius: 12px;
+  font-weight: 600;
+  color: #0f172a;
+}
+
+/* LISTA */
+.insumos-lista {
+  display: grid;
+  gap: 16px;
+}
+
+/* CARD */
+.insumo-card {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 16px;
+  box-shadow: 0 10px 25px rgba(0,0,0,.08);
+  border-left: 6px solid transparent;
+}
+
+.insumo-card.critico { border-color: #dc2626; }
+.insumo-card.alerta  { border-color: #f59e0b; }
+.insumo-card.ok      { border-color: #16a34a; }
+
+.insumo-top h4 {
+  margin: 0;
+  font-weight: 900;
+  color: #0f172a;
+}
+
+.insumo-body p {
+  color: #475569;
+  font-weight: 600;
+}
+
+/* BARRA */
+.barra {
+  background: #e5e7eb;
+  border-radius: 10px;
+  overflow: hidden;
+  height: 18px;
+  margin: 10px 0;
+}
+
+.barra div {
+  height: 100%;
+  background: linear-gradient(90deg,#ec4899,#8b5cf6,#22d3ee);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 800;
+  text-align: center;
+}
+
+/* BADGES */
+.badge {
+  font-size: 12px;
+  padding: 4px 12px;
+  border-radius: 999px;
+  font-weight: 800;
+}
+
+.badge.critico { background:#fee2e2; color:#991b1b; }
+.badge.alerta  { background:#fef3c7; color:#92400e; }
+.badge.ok      { background:#dcfce7; color:#166534; }

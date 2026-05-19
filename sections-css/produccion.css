@@ -1,0 +1,88 @@
+.prod-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.prod-kpis {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.kpi {
+  background: #fff;
+  border-radius: 14px;
+  padding: 16px;
+  box-shadow: 0 10px 20px rgba(0,0,0,.08);
+}
+
+.kpi span {
+  font-size: 26px;
+  font-weight: bold;
+}
+
+.kpi.ok span { color: #16a34a; }
+.kpi.alerta span { color: #dc2626; }
+
+.tabs {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.tab {
+  padding: 10px 16px;
+  border-radius: 12px;
+  background: #e5e7eb;
+  cursor: pointer;
+  border: none;
+}
+
+.tab.active {
+  background: linear-gradient(135deg,#2563eb,#4f46e5);
+  color: #fff;
+}
+
+.tab-content {
+  display: none;
+}
+
+.tab-content.active {
+  display: block;
+}
+
+.tabla-wrap table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+  border-radius: 14px;
+  overflow: hidden;
+}
+
+th, td {
+  padding: 12px;
+  text-align: center;
+}
+
+th {
+  background: #f3f4f6;
+}
+
+td.ok { color: #2563eb; font-weight: bold; }
+td.alerta { color: #dc2626; }
+
+.mermas-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit,minmax(200px,1fr));
+  gap: 14px;
+}
+
+.merma-card {
+  background: #fff;
+  padding: 16px;
+  border-radius: 14px;
+  box-shadow: 0 8px 16px rgba(0,0,0,.08);
+}

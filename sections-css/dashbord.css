@@ -1,0 +1,42 @@
+body {
+  margin: 0;
+  font-family: Arial;
+}
+
+.app {
+  display: flex;
+}
+
+.sidebar {
+  width: 220px;
+  background: #ff6f91;
+  color: white;
+  padding: 15px;
+}
+
+.sidebar a, .sidebar button {
+  display: block;
+  margin: 8px 0;
+  padding: 8px;
+  background: white;
+  color: #ff6f91;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+}
+
+.sidebar a.active {
+  background: #ffd1dc;
+}
+
+.main {
+  padding: 20px;
+  flex: 1;
+}
+.view {
+  display: none;
+}
+
+.view.active {
+  display: block;
+}
