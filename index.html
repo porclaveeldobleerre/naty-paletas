@@ -260,35 +260,8 @@
       <div class="section-tag">📸 Nuestros Productos</div>
       <h2 class="section-title">GALERÍA DE SABORES</h2>
     </div>
-    <div class="galeria-grid">
-      <div class="galeria-item grande">
-        <img src="assets/naty-banner.jpeg" alt="Naty Paletas"
-          onerror="this.src='https://images.unsplash.com/photo-1587314168485-3236d6710814?w=600&h=400&fit=crop&auto=format'">
-        <div class="galeria-overlay"><span>Naty Paletas y Helados</span></div>
-      </div>
-      <div class="galeria-item">
-        <img src="assets/naty-nina.jpeg" alt="Felicidad Naty"
-          onerror="this.src='https://images.unsplash.com/photo-1488900128323-21503983a07e?w=400&h=300&fit=crop&auto=format'">
-        <div class="galeria-overlay"><span>😊 Sabores que alegran</span></div>
-      </div>
-      <div class="galeria-item">
-        <img src="assets/naty-menu.jpeg" alt="Menú Naty"
-          onerror="this.src='https://images.unsplash.com/photo-1501443762994-82bd5dace89a?w=400&h=300&fit=crop&auto=format'">
-        <div class="galeria-overlay"><span>Nuestro Menú</span></div>
-      </div>
-      <div class="galeria-item">
-        <img src="assets/naty-flyer.png" alt="Mayoreo Naty"
-          onerror="this.src='https://images.unsplash.com/photo-1563805042-7684c019e1cb?w=400&h=300&fit=crop&auto=format'">
-        <div class="galeria-overlay"><span>Venta al Mayoreo</span></div>
-      </div>
-      <div class="galeria-item">
-        <img src="https://images.unsplash.com/photo-1497034825429-c343d7c6a68f?w=400&h=300&fit=crop&auto=format" alt="Paletas">
-        <div class="galeria-overlay"><span>Paletas Frescas</span></div>
-      </div>
-      <div class="galeria-item">
-        <img src="https://images.unsplash.com/photo-1560008581-09826d1de69e?w=400&h=300&fit=crop&auto=format" alt="Helados">
-        <div class="galeria-overlay"><span>Helados Cremosos</span></div>
-      </div>
+    <div class="galeria-grid" id="galeriaGrid">
+      <!-- Las fotos se cargan desde galeria.json -->
     </div>
   </div>
 </section>
@@ -417,6 +390,31 @@ document.querySelectorAll('a[href^="#"]').forEach(function(a) {
     document.getElementById('navLinks').classList.remove('open');
   });
 });
+
+// ══ GALERÍA DINÁMICA ══
+fetch('galeria.json')
+  .then(function(r) { return r.json(); })
+  .then(function(data) {
+    var fotos = Array.isArray(data) ? data : (data.fotos || []);
+    var grid = document.getElementById('galeriaGrid');
+    if (!grid || !fotos.length) return;
+    grid.innerHTML = fotos.map(function(foto, i) {
+      return '<div class="galeria-item' + (i === 0 ? ' grande' : '') + '">' +
+        '<img src="' + foto.imagen + '" alt="' + (foto.titulo || '') + '" ' +
+        'onerror="this.src=\'https://images.unsplash.com/photo-1587314168485-3236d6710814?w=600&h=400&fit=crop&auto=format\'">' +
+        '<div class="galeria-overlay"><span>' + (foto.titulo || '') + '</span></div>' +
+        '</div>';
+    }).join('');
+  })
+  .catch(function() {
+    // Si falla el fetch, mostrar fotos por defecto
+    var grid = document.getElementById('galeriaGrid');
+    if (grid) grid.innerHTML =
+      '<div class="galeria-item grande"><img src="assets/naty-banner.jpeg" alt="Naty Paletas"><div class="galeria-overlay"><span>Naty Paletas y Helados</span></div></div>' +
+      '<div class="galeria-item"><img src="assets/naty-nina.jpeg" alt="Felicidad Naty"><div class="galeria-overlay"><span>😊 Sabores que alegran</span></div></div>' +
+      '<div class="galeria-item"><img src="assets/naty-menu.jpeg" alt="Menú Naty"><div class="galeria-overlay"><span>Nuestro Menú</span></div></div>' +
+      '<div class="galeria-item"><img src="assets/naty-flyer.png" alt="Mayoreo Naty"><div class="galeria-overlay"><span>Venta al Mayoreo</span></div></div>';
+  });
 </script>
 
 <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>

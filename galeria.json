@@ -1,0 +1,22 @@
+[
+  {
+    "imagen": "assets/naty-banner.jpeg",
+    "titulo": "Naty Paletas y Helados",
+    "descripcion": "Nuestras deliciosas paletas artesanales"
+  },
+  {
+    "imagen": "assets/naty-nina.jpeg",
+    "titulo": "Sabores que alegran",
+    "descripcion": "😊 Así de felices nos ponen"
+  },
+  {
+    "imagen": "assets/naty-menu.jpeg",
+    "titulo": "Nuestro Menú",
+    "descripcion": "Variedad de sabores para todos"
+  },
+  {
+    "imagen": "assets/naty-flyer.png",
+    "titulo": "Venta al Mayoreo",
+    "descripcion": "Pedido mínimo 50 piezas"
+  }
+]

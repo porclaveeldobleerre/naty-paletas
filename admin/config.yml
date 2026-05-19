@@ -9,12 +9,17 @@ locale: es
 
 collections:
   - name: "galeria"
-    label: "Galería de Fotos"
-    label_singular: "Foto"
-    folder: "_galeria"
-    create: true
-    slug: "{{slug}}"
-    fields:
-      - { label: "Título", name: "title", widget: "string" }
-      - { label: "Foto", name: "image", widget: "image" }
-      - { label: "Descripción", name: "alt", widget: "string", required: false }
+    label: "📸 Galería de Fotos"
+    files:
+      - name: "fotos"
+        label: "Fotos de la Galería"
+        file: "galeria.json"
+        fields:
+          - name: "fotos"
+            label: "Fotos"
+            widget: "list"
+            label_singular: "Foto"
+            fields:
+              - { label: "Foto", name: "imagen", widget: "image", hint: "Sube una foto desde tu galería" }
+              - { label: "Título", name: "titulo", widget: "string" }
+              - { label: "Descripción", name: "descripcion", widget: "string", required: false }
