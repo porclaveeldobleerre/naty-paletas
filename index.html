@@ -338,21 +338,17 @@
           <div><strong>Dirección</strong><br>La Villita, Tecamachalco, Puebla, México</div>
         </div>
         <!-- Mapa Google Maps -->
-        <div style="margin-top:16px;border-radius:14px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,0.12);">
-          <iframe
-            src="https://www.google.com/maps?q=18.874483,-97.727860&z=17&output=embed"
-            width="100%" height="240" style="border:0;display:block;"
-            allowfullscreen="" loading="lazy"
-            referrerpolicy="no-referrer-when-downgrade"
-            title="Ubicación Naty Paletas - La Villita, Tecamachalco, Puebla">
-          </iframe>
-        </div>
-        <div style="margin-top:8px;text-align:center;">
-          <a href="https://maps.app.goo.gl/bwB9LP9B61oCsHTj7" target="_blank"
-            style="font-size:0.85rem;color:#ef4444;text-decoration:none;">
-            <i class="fas fa-location-dot"></i> Ver en Google Maps
-          </a>
-        </div>
+        <a href="https://maps.app.goo.gl/bwB9LP9B61oCsHTj7" target="_blank" style="display:block;margin-top:16px;border-radius:14px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,0.12);text-decoration:none;position:relative;">
+          <img src="https://maps.googleapis.com/maps/api/staticmap?center=18.874483,-97.727860&zoom=16&size=600x240&markers=color:red%7C18.874483,-97.727860&key=AIzaSyD-placeholder"
+            onerror="this.src='https://via.placeholder.com/600x240/e2e8f0/64748b?text=📍+La+Villita,+Tecamachalco,+Puebla'"
+            alt="Ubicación Naty Paletas"
+            style="width:100%;height:200px;object-fit:cover;display:block;">
+          <div style="position:absolute;inset:0;background:rgba(0,0,0,0.04);display:flex;align-items:center;justify-content:center;">
+            <div style="background:#fff;border-radius:10px;padding:10px 18px;box-shadow:0 4px 16px rgba(0,0,0,0.15);display:flex;align-items:center;gap:8px;font-weight:700;font-size:0.88rem;color:#1e293b;">
+              <i class="fas fa-location-dot" style="color:#ef4444;font-size:1.1rem;"></i> Abrir en Google Maps
+            </div>
+          </div>
+        </a>
         <div class="contacto-item">
           <i class="fas fa-phone" style="color:#22c55e;"></i>
           <div><strong>Teléfono / WhatsApp</strong><br>249 104 1126 &nbsp;|&nbsp; 249 177 0476</div>
