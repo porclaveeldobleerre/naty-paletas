@@ -84,13 +84,13 @@ img{max-width:100%;display:block;}
 
 /* PRODUCTOS */
 .productos-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;}
-.producto-card{background:#fff;border-radius:20px;overflow:hidden;box-shadow:0 4px 24px rgba(0,0,0,0.08);border:1px solid #e5e7eb;transition:transform .2s,box-shadow .2s;}
+.producto-card{background:#fff;border-radius:20px;overflow:hidden;box-shadow:0 4px 24px rgba(0,0,0,0.08);border:1px solid #e5e7eb;transition:transform .2s,box-shadow .2s;min-width:0;}
 .producto-card:hover{transform:translateY(-6px);box-shadow:0 16px 48px rgba(0,0,0,0.14);}
 .producto-header{padding:14px 20px;font-size:0.88rem;font-weight:800;display:flex;align-items:center;gap:8px;color:#fff;letter-spacing:.5px;}
 .agua-header{background:linear-gradient(135deg,#0ea5e9,#3b82f6);}
 .crema-header{background:linear-gradient(135deg,#ec4899,#f43f5e);}
 .gourmet-header{background:linear-gradient(135deg,#f59e0b,#f97316);}
-.producto-body{padding:20px;}
+.producto-body{padding:20px;display:flex;flex-direction:column;}
 .sabores-list{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:18px;}
 .sabores-list span{background:#f1f5f9;color:#374151;font-size:0.75rem;font-weight:600;padding:4px 10px;border-radius:999px;}
 .precio-box{background:#f8fafc;border-radius:12px;padding:14px 16px;margin-bottom:16px;display:flex;justify-content:space-between;align-items:center;}
