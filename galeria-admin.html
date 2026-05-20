@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Editar Galería — Naty Paletas</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    *{box-sizing:border-box;margin:0;padding:0;}
+    body{font-family:system-ui,sans-serif;background:#f4f6fb;color:#1e293b;min-height:100vh;}
+    .header{background:linear-gradient(135deg,#ec4899,#a855f7);padding:20px 24px;color:#fff;display:flex;align-items:center;gap:12px;}
+    .header h1{font-size:1.2rem;font-weight:800;}
+    .header p{font-size:0.8rem;opacity:.85;margin-top:2px;}
+    .container{max-width:600px;margin:0 auto;padding:20px 16px;}
+
+    /* LOGIN */
+    .login-box{background:#fff;border-radius:16px;padding:32px 24px;box-shadow:0 4px 20px rgba(0,0,0,0.08);text-align:center;margin-top:40px;}
+    .login-box h2{font-size:1.1rem;font-weight:800;margin-bottom:8px;}
+    .login-box p{color:#64748b;font-size:0.85rem;margin-bottom:24px;}
+    .login-box input{width:100%;padding:12px 16px;border:1.5px solid #e2e8f0;border-radius:10px;font-size:0.9rem;margin-bottom:12px;outline:none;font-family:inherit;}
+    .login-box input:focus{border-color:#a855f7;}
+    .btn-login{width:100%;background:linear-gradient(135deg,#ec4899,#a855f7);color:#fff;border:none;padding:13px;border-radius:10px;font-size:0.95rem;font-weight:700;cursor:pointer;}
+    .error-msg{color:#ef4444;font-size:0.82rem;margin-top:8px;}
+
+    /* PANEL */
+    .panel{display:none;}
+    .card{background:#fff;border-radius:14px;padding:20px;box-shadow:0 2px 12px rgba(0,0,0,0.07);margin-bottom:16px;}
+    .card h3{font-size:1rem;font-weight:800;margin-bottom:16px;display:flex;align-items:center;gap:8px;}
+
+    /* UPLOAD */
+    .upload-area{border:2px dashed #e2e8f0;border-radius:12px;padding:32px 16px;text-align:center;cursor:pointer;transition:all .2s;position:relative;}
+    .upload-area:hover,.upload-area.drag{border-color:#a855f7;background:#faf5ff;}
+    .upload-area i{font-size:2.5rem;color:#a855f7;margin-bottom:12px;display:block;}
+    .upload-area p{color:#64748b;font-size:0.88rem;}
+    .upload-area strong{color:#a855f7;}
+    .upload-area input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;}
+    .progress{background:#f1f5f9;border-radius:999px;height:8px;margin-top:12px;overflow:hidden;display:none;}
+    .progress-bar{height:100%;background:linear-gradient(135deg,#ec4899,#a855f7);border-radius:999px;width:0%;transition:width .3s;}
+    .upload-status{font-size:0.82rem;color:#64748b;margin-top:8px;text-align:center;}
+
+    /* GALERÍA */
+    .galeria-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;}
+    .foto-item{position:relative;border-radius:10px;overflow:hidden;aspect-ratio:4/3;background:#f1f5f9;}
+    .foto-item img{width:100%;height:100%;object-fit:cover;}
+    .foto-item .overlay{position:absolute;inset:0;background:rgba(0,0,0,0);transition:background .2s;display:flex;align-items:center;justify-content:center;gap:8px;}
+    .foto-item:hover .overlay{background:rgba(0,0,0,0.45);}
+    .foto-item .btn-del{background:#ef4444;color:#fff;border:none;border-radius:8px;padding:7px 12px;cursor:pointer;font-size:0.8rem;font-weight:700;opacity:0;transition:opacity .2s;}
+    .foto-item:hover .btn-del{opacity:1;}
+    .foto-item .titulo-input{position:absolute;bottom:0;left:0;right:0;background:rgba(0,0,0,0.6);color:#fff;border:none;padding:6px 10px;font-size:0.75rem;font-family:inherit;outline:none;width:100%;}
+    .empty-galeria{text-align:center;color:#94a3b8;padding:32px;font-size:0.88rem;grid-column:1/-1;}
+
+    .btn-guardar{width:100%;background:linear-gradient(135deg,#ec4899,#a855f7);color:#fff;border:none;padding:14px;border-radius:10px;font-size:1rem;font-weight:800;cursor:pointer;margin-top:4px;display:flex;align-items:center;justify-content:center;gap:8px;}
+    .btn-guardar:disabled{opacity:.6;cursor:not-allowed;}
+    .btn-salir{background:#f1f5f9;color:#64748b;border:none;padding:10px 20px;border-radius:10px;font-size:0.85rem;font-weight:600;cursor:pointer;margin-top:8px;width:100%;}
+
+    .toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#22c55e;color:#fff;padding:12px 24px;border-radius:10px;font-weight:700;font-size:0.88rem;z-index:999;display:none;box-shadow:0 4px 20px rgba(0,0,0,0.2);}
+  </style>
+</head>
+<body>
+
+<div class="header">
+  <div>
+    <h1>🍡 Naty Paletas — Galería</h1>
+    <p>Administra las fotos de la galería del sitio</p>
+  </div>
+</div>
+
+<!-- LOGIN -->
+<div class="container" id="loginSection">
+  <div class="login-box">
+    <div style="font-size:3rem;margin-bottom:12px;">🔒</div>
+    <h2>Acceso al panel</h2>
+    <p>Solo personal autorizado de Naty Paletas</p>
+    <input type="password" id="pinInput" placeholder="Ingresa el PIN de acceso" maxlength="20">
+    <button class="btn-login" onclick="verificarPin()">Entrar</button>
+    <div class="error-msg" id="errorMsg"></div>
+  </div>
+</div>
+
+<!-- PANEL -->
+<div class="container panel" id="panelSection">
+
+  <div class="card">
+    <h3><i class="fas fa-cloud-upload-alt" style="color:#a855f7;"></i> Subir nueva foto</h3>
+    <div class="upload-area" id="uploadArea">
+      <input type="file" id="fileInput" accept="image/*" multiple onchange="subirFotos(this.files)">
+      <i class="fas fa-image"></i>
+      <p>Toca aquí para seleccionar fotos<br><strong>o arrastra desde tu galería</strong></p>
+      <p style="font-size:0.75rem;margin-top:8px;color:#94a3b8;">JPG, PNG, WEBP — máx 10MB por foto</p>
+    </div>
+    <div class="progress" id="progressBar"><div class="progress-bar" id="progressFill"></div></div>
+    <div class="upload-status" id="uploadStatus"></div>
+  </div>
+
+  <div class="card">
+    <h3><i class="fas fa-images" style="color:#ec4899;"></i> Fotos actuales <span id="contadorFotos" style="font-size:0.75rem;color:#94a3b8;font-weight:500;"></span></h3>
+    <div class="galeria-grid" id="galeriaAdmin"></div>
+  </div>
+
+  <button class="btn-guardar" id="btnGuardar" onclick="guardarGaleria()">
+    <i class="fas fa-save"></i> Guardar cambios en el sitio
+  </button>
+  <button class="btn-salir" onclick="cerrarSesion()">Cerrar sesión</button>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const CLOUD_NAME = 'dfv1qc74g';
+const UPLOAD_PRESET = 'naty-galeria';
+const PIN = 'naty2026';
+
+var fotos = [];
+
+function verificarPin() {
+  var pin = document.getElementById('pinInput').value.trim();
+  if (pin === PIN) {
+    document.getElementById('loginSection').style.display = 'none';
+    document.getElementById('panelSection').style.display = 'block';
+    cargarGaleria();
+  } else {
+    document.getElementById('errorMsg').textContent = 'PIN incorrecto, intenta de nuevo.';
+  }
+}
+
+document.getElementById('pinInput').addEventListener('keydown', function(e) {
+  if (e.key === 'Enter') verificarPin();
+});
+
+function cerrarSesion() {
+  document.getElementById('loginSection').style.display = 'block';
+  document.getElementById('panelSection').style.display = 'none';
+  document.getElementById('pinInput').value = '';
+}
+
+function cargarGaleria() {
+  fetch('galeria.json?t=' + Date.now())
+    .then(function(r) { return r.json(); })
+    .then(function(data) {
+      fotos = Array.isArray(data) ? data : (data.fotos || []);
+      renderGaleria();
+    })
+    .catch(function() { fotos = []; renderGaleria(); });
+}
+
+function renderGaleria() {
+  var grid = document.getElementById('galeriaAdmin');
+  var contador = document.getElementById('contadorFotos');
+  contador.textContent = '(' + fotos.length + ' fotos)';
+  if (!fotos.length) {
+    grid.innerHTML = '<div class="empty-galeria"><i class="fas fa-images" style="font-size:2rem;display:block;margin-bottom:8px;"></i>No hay fotos aún.<br>Sube la primera foto arriba.</div>';
+    return;
+  }
+  grid.innerHTML = fotos.map(function(f, i) {
+    return '<div class="foto-item">' +
+      '<img src="' + f.imagen + '" alt="' + (f.titulo||'') + '">' +
+      '<div class="overlay"><button class="btn-del" onclick="eliminarFoto(' + i + ')"><i class="fas fa-trash"></i> Eliminar</button></div>' +
+      '<input class="titulo-input" value="' + (f.titulo||'') + '" placeholder="Título..." onchange="fotos[' + i + '].titulo=this.value">' +
+    '</div>';
+  }).join('');
+}
+
+function subirFotos(files) {
+  if (!files.length) return;
+  var progress = document.getElementById('progressBar');
+  var fill = document.getElementById('progressFill');
+  var status = document.getElementById('uploadStatus');
+  progress.style.display = 'block';
+  fill.style.width = '0%';
+  var total = files.length;
+  var done = 0;
+
+  Array.from(files).forEach(function(file) {
+    var fd = new FormData();
+    fd.append('file', file);
+    fd.append('upload_preset', UPLOAD_PRESET);
+    fd.append('folder', 'naty-galeria');
+    status.textContent = 'Subiendo ' + (done+1) + ' de ' + total + '...';
+
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', 'https://api.cloudinary.com/v1_1/' + CLOUD_NAME + '/image/upload');
+    xhr.onload = function() {
+      done++;
+      fill.style.width = (done/total*100) + '%';
+      if (xhr.status === 200) {
+        var res = JSON.parse(xhr.responseText);
+        fotos.push({ imagen: res.secure_url, titulo: file.name.replace(/\.[^.]+$/, ''), descripcion: '' });
+        renderGaleria();
+      }
+      if (done === total) {
+        status.textContent = '✅ ' + total + ' foto(s) subida(s). Guarda los cambios.';
+        setTimeout(function() { progress.style.display='none'; status.textContent=''; }, 4000);
+      }
+    };
+    xhr.onerror = function() {
+      done++;
+      status.textContent = '❌ Error al subir una foto.';
+    };
+    xhr.send(fd);
+  });
+}
+
+function eliminarFoto(i) {
+  if (!confirm('¿Eliminar esta foto de la galería?')) return;
+  fotos.splice(i, 1);
+  renderGaleria();
+  mostrarToast('Foto eliminada — guarda los cambios');
+}
+
+function guardarGaleria() {
+  var btn = document.getElementById('btnGuardar');
+  btn.disabled = true;
+  btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Guardando...';
+
+  // Guardar en localStorage como respaldo
+  localStorage.setItem('naty_galeria', JSON.stringify(fotos));
+
+  // Crear el contenido del JSON
+  var contenido = JSON.stringify(fotos, null, 2);
+
+  // Usar la API de GitHub para actualizar galeria.json
+  var token = localStorage.getItem('gh_token');
+  if (!token) {
+    token = prompt('Primera vez: ingresa el token de acceso (te lo da el administrador):');
+    if (!token) { btn.disabled=false; btn.innerHTML='<i class="fas fa-save"></i> Guardar cambios en el sitio'; return; }
+    localStorage.setItem('gh_token', token);
+  }
+
+  // Obtener SHA del archivo actual
+  fetch('https://api.github.com/repos/porclaveeldobleerre/naty-paletas/contents/galeria.json', {
+    headers: { 'Authorization': 'token ' + token, 'Accept': 'application/vnd.github.v3+json' }
+  })
+  .then(function(r) { return r.json(); })
+  .then(function(data) {
+    return fetch('https://api.github.com/repos/porclaveeldobleerre/naty-paletas/contents/galeria.json', {
+      method: 'PUT',
+      headers: { 'Authorization': 'token ' + token, 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        message: 'Actualizar galería desde panel',
+        content: btoa(unescape(encodeURIComponent(contenido))),
+        sha: data.sha
+      })
+    });
+  })
+  .then(function(r) {
+    if (r.ok) {
+      mostrarToast('✅ ¡Galería actualizada! El sitio se actualiza en ~1 minuto');
+    } else {
+      localStorage.removeItem('gh_token');
+      mostrarToast('❌ Error de permisos. Recarga e intenta de nuevo.');
+    }
+  })
+  .catch(function() { mostrarToast('❌ Error de conexión. Intenta de nuevo.'); })
+  .finally(function() {
+    btn.disabled = false;
+    btn.innerHTML = '<i class="fas fa-save"></i> Guardar cambios en el sitio';
+  });
+}
+
+function mostrarToast(msg) {
+  var t = document.getElementById('toast');
+  t.textContent = msg;
+  t.style.display = 'block';
+  setTimeout(function() { t.style.display='none'; }, 4000);
+}
+</script>
+</body>
+</html>
