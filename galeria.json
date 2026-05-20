@@ -18,5 +18,10 @@
     "imagen": "assets/naty-flyer.png",
     "titulo": "Venta al Mayoreo",
     "descripcion": "Pedido mínimo 50 piezas"
+  },
+  {
+    "imagen": "https://res.cloudinary.com/dfv1qc74g/image/upload/v1779295785/naty-galeria/kaeks5lnfop2jnncxpl6.jpg",
+    "titulo": "IMG_0547",
+    "descripcion": ""
   }
 ]
