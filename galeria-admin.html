@@ -219,11 +219,11 @@ function guardarGaleria() {
   var contenido = JSON.stringify(fotos, null, 2);
 
   // Usar la API de GitHub para actualizar galeria.json
-  var token = localStorage.getItem('gh_token');
+  var token = localStorage.getItem('naty_gh');
   if (!token) {
-    token = prompt('Primera vez: ingresa el token de acceso (te lo da el administrador):');
+    token = prompt('Primera configuración:\nIngresa el código de acceso que te dio el administrador:');
     if (!token) { btn.disabled=false; btn.innerHTML='<i class="fas fa-save"></i> Guardar cambios en el sitio'; return; }
-    localStorage.setItem('gh_token', token);
+    localStorage.setItem('naty_gh', token);
   }
 
   // Obtener SHA del archivo actual
@@ -246,7 +246,7 @@ function guardarGaleria() {
     if (r.ok) {
       mostrarToast('✅ ¡Galería actualizada! El sitio se actualiza en ~1 minuto');
     } else {
-      localStorage.removeItem('gh_token');
+      localStorage.removeItem('naty_gh');
       mostrarToast('❌ Error de permisos. Recarga e intenta de nuevo.');
     }
   })
