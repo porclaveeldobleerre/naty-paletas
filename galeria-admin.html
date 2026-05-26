@@ -11,7 +11,7 @@
     .header{background:linear-gradient(135deg,#ec4899,#a855f7);padding:20px 24px;color:#fff;display:flex;align-items:center;gap:12px;}
     .header h1{font-size:1.2rem;font-weight:800;}
     .header p{font-size:0.8rem;opacity:.85;margin-top:2px;}
-    .container{max-width:600px;margin:0 auto;padding:20px 16px;}
+    .container{max-width:640px;margin:0 auto;padding:20px 16px;}
 
     /* LOGIN */
     .login-box{background:#fff;border-radius:16px;padding:32px 24px;box-shadow:0 4px 20px rgba(0,0,0,0.08);text-align:center;margin-top:40px;}
@@ -27,32 +27,49 @@
     .card{background:#fff;border-radius:14px;padding:20px;box-shadow:0 2px 12px rgba(0,0,0,0.07);margin-bottom:16px;}
     .card h3{font-size:1rem;font-weight:800;margin-bottom:16px;display:flex;align-items:center;gap:8px;}
 
+    /* CAMPOS NUEVOS */
+    .form-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;}
+    .form-group{display:flex;flex-direction:column;gap:5px;}
+    .form-group label{font-size:0.75rem;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:.3px;}
+    .form-group input,.form-group select{padding:10px 12px;border:1.5px solid #e2e8f0;border-radius:9px;font-size:0.88rem;font-family:inherit;outline:none;background:#fff;color:#1e293b;}
+    .form-group input:focus,.form-group select:focus{border-color:#a855f7;}
+    .tipo-btns{display:flex;gap:6px;}
+    .tipo-btn{flex:1;padding:9px 6px;border:2px solid #e2e8f0;border-radius:9px;background:#fff;font-size:0.78rem;font-weight:700;cursor:pointer;text-align:center;transition:all .15s;font-family:inherit;}
+    .tipo-btn.sel-agua{border-color:#0ea5e9;background:#e0f2fe;color:#0369a1;}
+    .tipo-btn.sel-crema{border-color:#ec4899;background:#fce7f3;color:#be185d;}
+    .tipo-btn.sel-galeria{border-color:#a855f7;background:#f3e8ff;color:#7e22ce;}
+
     /* UPLOAD */
-    .upload-area{border:2px dashed #e2e8f0;border-radius:12px;padding:32px 16px;text-align:center;cursor:pointer;transition:all .2s;position:relative;}
+    .upload-area{border:2px dashed #e2e8f0;border-radius:12px;padding:28px 16px;text-align:center;cursor:pointer;transition:all .2s;position:relative;}
     .upload-area:hover,.upload-area.drag{border-color:#a855f7;background:#faf5ff;}
-    .upload-area i{font-size:2.5rem;color:#a855f7;margin-bottom:12px;display:block;}
-    .upload-area p{color:#64748b;font-size:0.88rem;}
+    .upload-area i{font-size:2.2rem;color:#a855f7;margin-bottom:10px;display:block;}
+    .upload-area p{color:#64748b;font-size:0.85rem;}
     .upload-area strong{color:#a855f7;}
     .upload-area input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;}
     .progress{background:#f1f5f9;border-radius:999px;height:8px;margin-top:12px;overflow:hidden;display:none;}
     .progress-bar{height:100%;background:linear-gradient(135deg,#ec4899,#a855f7);border-radius:999px;width:0%;transition:width .3s;}
     .upload-status{font-size:0.82rem;color:#64748b;margin-top:8px;text-align:center;}
 
-    /* GALERÍA */
-    .galeria-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;}
-    .foto-item{position:relative;border-radius:10px;overflow:hidden;aspect-ratio:4/3;background:#f1f5f9;}
-    .foto-item img{width:100%;height:100%;object-fit:cover;}
-    .foto-item .overlay{position:absolute;inset:0;background:rgba(0,0,0,0);transition:background .2s;display:flex;align-items:center;justify-content:center;gap:8px;}
-    .foto-item:hover .overlay{background:rgba(0,0,0,0.45);}
-    .foto-item .btn-del{background:#ef4444;color:#fff;border:none;border-radius:8px;padding:7px 12px;cursor:pointer;font-size:0.8rem;font-weight:700;opacity:0;transition:opacity .2s;}
-    .foto-item:hover .btn-del{opacity:1;}
-    .foto-item .titulo-input{position:absolute;bottom:0;left:0;right:0;background:rgba(0,0,0,0.6);color:#fff;border:none;padding:6px 10px;font-size:0.75rem;font-family:inherit;outline:none;width:100%;}
+    /* GRID ADMIN */
+    .admin-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;}
+    .foto-item{background:#f8fafc;border-radius:12px;overflow:hidden;border:1.5px solid #e2e8f0;}
+    .foto-item-img{position:relative;aspect-ratio:3/4;}
+    .foto-item-img img{width:100%;height:100%;object-fit:cover;}
+    .foto-tipo-badge{position:absolute;top:7px;left:7px;font-size:0.65rem;font-weight:800;padding:3px 9px;border-radius:999px;}
+    .badge-agua{background:rgba(14,165,233,0.9);color:#fff;}
+    .badge-crema{background:rgba(236,72,153,0.9);color:#fff;}
+    .badge-galeria{background:rgba(100,116,139,0.85);color:#fff;}
+    .btn-del-abs{position:absolute;top:7px;right:7px;background:#ef4444;color:#fff;border:none;border-radius:7px;padding:5px 9px;cursor:pointer;font-size:0.75rem;font-weight:700;opacity:0;transition:opacity .2s;}
+    .foto-item:hover .btn-del-abs{opacity:1;}
+    .foto-item-meta{padding:8px 10px;display:flex;flex-direction:column;gap:5px;}
+    .meta-input{width:100%;padding:6px 9px;border:1.5px solid #e2e8f0;border-radius:7px;font-size:0.75rem;font-family:inherit;outline:none;background:#fff;}
+    .meta-input:focus{border-color:#a855f7;}
+    .meta-select{width:100%;padding:6px 9px;border:1.5px solid #e2e8f0;border-radius:7px;font-size:0.75rem;font-family:inherit;outline:none;background:#fff;cursor:pointer;}
     .empty-galeria{text-align:center;color:#94a3b8;padding:32px;font-size:0.88rem;grid-column:1/-1;}
 
     .btn-guardar{width:100%;background:linear-gradient(135deg,#ec4899,#a855f7);color:#fff;border:none;padding:14px;border-radius:10px;font-size:1rem;font-weight:800;cursor:pointer;margin-top:4px;display:flex;align-items:center;justify-content:center;gap:8px;}
     .btn-guardar:disabled{opacity:.6;cursor:not-allowed;}
     .btn-salir{background:#f1f5f9;color:#64748b;border:none;padding:10px 20px;border-radius:10px;font-size:0.85rem;font-weight:600;cursor:pointer;margin-top:8px;width:100%;}
-
     .toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#22c55e;color:#fff;padding:12px 24px;border-radius:10px;font-weight:700;font-size:0.88rem;z-index:999;display:none;box-shadow:0 4px 20px rgba(0,0,0,0.2);}
   </style>
 </head>
@@ -60,8 +77,8 @@
 
 <div class="header">
   <div>
-    <h1>🍡 Naty Paletas — Galería</h1>
-    <p>Administra las fotos de la galería del sitio</p>
+    <h1>🍡 Naty Paletas — Catálogo</h1>
+    <p>Administra paletas y fotos de la galería</p>
   </div>
 </div>
 
@@ -80,21 +97,47 @@
 <!-- PANEL -->
 <div class="container panel" id="panelSection">
 
+  <!-- SUBIR FOTO -->
   <div class="card">
-    <h3><i class="fas fa-cloud-upload-alt" style="color:#a855f7;"></i> Subir nueva foto</h3>
+    <h3><i class="fas fa-cloud-upload-alt" style="color:#a855f7;"></i> Agregar paleta o foto</h3>
+
+    <!-- Tipo -->
+    <div style="margin-bottom:12px;">
+      <div style="font-size:0.75rem;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:.3px;margin-bottom:7px;">Categoría</div>
+      <div class="tipo-btns">
+        <button class="tipo-btn sel-agua" id="tbAgua" onclick="selTipo('agua')">💧 De Agua</button>
+        <button class="tipo-btn" id="tbCrema" onclick="selTipo('crema')">🍦 De Crema</button>
+        <button class="tipo-btn" id="tbGaleria" onclick="selTipo('galeria')">📷 Galería</button>
+      </div>
+    </div>
+
+    <!-- Nombre del sabor -->
+    <div class="form-group" style="margin-bottom:12px;">
+      <label>Nombre del sabor / título</label>
+      <input type="text" id="inputNombre" placeholder="Ej: Limón, Fresa con Crema, Oreo...">
+    </div>
+
+    <!-- Descripción -->
+    <div class="form-group" style="margin-bottom:14px;">
+      <label>Descripción (opcional)</label>
+      <input type="text" id="inputDesc" placeholder="Ej: Refrescante y natural">
+    </div>
+
+    <!-- Upload -->
     <div class="upload-area" id="uploadArea">
       <input type="file" id="fileInput" accept="image/*" multiple onchange="subirFotos(this.files)">
       <i class="fas fa-image"></i>
-      <p>Toca aquí para seleccionar fotos<br><strong>o arrastra desde tu galería</strong></p>
-      <p style="font-size:0.75rem;margin-top:8px;color:#94a3b8;">JPG, PNG, WEBP — máx 10MB por foto</p>
+      <p>Toca aquí para seleccionar la foto<br><strong>o arrastra desde tu galería</strong></p>
+      <p style="font-size:0.75rem;margin-top:8px;color:#94a3b8;">JPG, PNG, WEBP — máx 10MB</p>
     </div>
     <div class="progress" id="progressBar"><div class="progress-bar" id="progressFill"></div></div>
     <div class="upload-status" id="uploadStatus"></div>
   </div>
 
+  <!-- LISTA ACTUAL -->
   <div class="card">
-    <h3><i class="fas fa-images" style="color:#ec4899;"></i> Fotos actuales <span id="contadorFotos" style="font-size:0.75rem;color:#94a3b8;font-weight:500;"></span></h3>
-    <div class="galeria-grid" id="galeriaAdmin"></div>
+    <h3><i class="fas fa-images" style="color:#ec4899;"></i> Paletas y fotos <span id="contadorFotos" style="font-size:0.75rem;color:#94a3b8;font-weight:500;"></span></h3>
+    <div class="admin-grid" id="galeriaAdmin"></div>
   </div>
 
   <button class="btn-guardar" id="btnGuardar" onclick="guardarGaleria()">
@@ -111,6 +154,14 @@ const UPLOAD_PRESET = 'naty-galeria';
 const PIN = 'naty2026';
 
 var fotos = [];
+var tipoSeleccionado = 'agua';
+
+function selTipo(t) {
+  tipoSeleccionado = t;
+  document.getElementById('tbAgua').className = 'tipo-btn' + (t==='agua' ? ' sel-agua' : '');
+  document.getElementById('tbCrema').className = 'tipo-btn' + (t==='crema' ? ' sel-crema' : '');
+  document.getElementById('tbGaleria').className = 'tipo-btn' + (t==='galeria' ? ' sel-galeria' : '');
+}
 
 function verificarPin() {
   var pin = document.getElementById('pinInput').value.trim();
@@ -146,22 +197,38 @@ function cargarGaleria() {
 function renderGaleria() {
   var grid = document.getElementById('galeriaAdmin');
   var contador = document.getElementById('contadorFotos');
-  contador.textContent = '(' + fotos.length + ' fotos)';
+  contador.textContent = '(' + fotos.length + ' entradas)';
   if (!fotos.length) {
-    grid.innerHTML = '<div class="empty-galeria"><i class="fas fa-images" style="font-size:2rem;display:block;margin-bottom:8px;"></i>No hay fotos aún.<br>Sube la primera foto arriba.</div>';
+    grid.innerHTML = '<div class="empty-galeria"><i class="fas fa-images" style="font-size:2rem;display:block;margin-bottom:8px;"></i>No hay fotos aún.</div>';
     return;
   }
   grid.innerHTML = fotos.map(function(f, i) {
+    var tipo = f.tipo || 'galeria';
+    var badgeClass = tipo === 'agua' ? 'badge-agua' : tipo === 'crema' ? 'badge-crema' : 'badge-galeria';
+    var badgeLabel = tipo === 'agua' ? '💧 Agua' : tipo === 'crema' ? '🍦 Crema' : '📷 Galería';
     return '<div class="foto-item">' +
-      '<img src="' + f.imagen + '" alt="' + (f.titulo||'') + '">' +
-      '<div class="overlay"><button class="btn-del" onclick="eliminarFoto(' + i + ')"><i class="fas fa-trash"></i> Eliminar</button></div>' +
-      '<input class="titulo-input" value="' + (f.titulo||'') + '" placeholder="Título..." onchange="fotos[' + i + '].titulo=this.value">' +
+      '<div class="foto-item-img">' +
+        '<img src="' + f.imagen + '" alt="' + (f.titulo||'') + '" onerror="this.src=\'https://images.unsplash.com/photo-1587314168485-3236d6710814?w=300&h=400&fit=crop\'">' +
+        '<span class="foto-tipo-badge ' + badgeClass + '">' + badgeLabel + '</span>' +
+        '<button class="btn-del-abs" onclick="eliminarFoto(' + i + ')"><i class="fas fa-trash"></i></button>' +
+      '</div>' +
+      '<div class="foto-item-meta">' +
+        '<input class="meta-input" value="' + (f.titulo||'') + '" placeholder="Nombre del sabor..." onchange="fotos[' + i + '].titulo=this.value">' +
+        '<input class="meta-input" value="' + (f.descripcion||'') + '" placeholder="Descripción..." onchange="fotos[' + i + '].descripcion=this.value">' +
+        '<select class="meta-select" onchange="fotos[' + i + '].tipo=this.value">' +
+          '<option value="agua"' + (tipo==='agua'?' selected':'') + '>💧 De Agua</option>' +
+          '<option value="crema"' + (tipo==='crema'?' selected':'') + '>🍦 De Crema</option>' +
+          '<option value="galeria"' + (tipo==='galeria'?' selected':'') + '>📷 Galería</option>' +
+        '</select>' +
+      '</div>' +
     '</div>';
   }).join('');
 }
 
 function subirFotos(files) {
   if (!files.length) return;
+  var nombre = document.getElementById('inputNombre').value.trim();
+  var desc = document.getElementById('inputDesc').value.trim();
   var progress = document.getElementById('progressBar');
   var fill = document.getElementById('progressFill');
   var status = document.getElementById('uploadStatus');
@@ -170,7 +237,7 @@ function subirFotos(files) {
   var total = files.length;
   var done = 0;
 
-  Array.from(files).forEach(function(file) {
+  Array.from(files).forEach(function(file, idx) {
     var fd = new FormData();
     fd.append('file', file);
     fd.append('upload_preset', UPLOAD_PRESET);
@@ -184,11 +251,19 @@ function subirFotos(files) {
       fill.style.width = (done/total*100) + '%';
       if (xhr.status === 200) {
         var res = JSON.parse(xhr.responseText);
-        fotos.push({ imagen: res.secure_url, titulo: file.name.replace(/\.[^.]+$/, ''), descripcion: '' });
+        var tituloFinal = nombre || file.name.replace(/\.[^.]+$/, '');
+        fotos.push({
+          imagen: res.secure_url,
+          titulo: tituloFinal,
+          tipo: tipoSeleccionado,
+          descripcion: desc
+        });
         renderGaleria();
       }
       if (done === total) {
         status.textContent = '✅ ' + total + ' foto(s) subida(s). Guarda los cambios.';
+        document.getElementById('inputNombre').value = '';
+        document.getElementById('inputDesc').value = '';
         setTimeout(function() { progress.style.display='none'; status.textContent=''; }, 4000);
       }
     };
@@ -201,24 +276,19 @@ function subirFotos(files) {
 }
 
 function eliminarFoto(i) {
-  if (!confirm('¿Eliminar esta foto de la galería?')) return;
+  if (!confirm('¿Eliminar "' + (fotos[i].titulo||'esta foto') + '"?')) return;
   fotos.splice(i, 1);
   renderGaleria();
-  mostrarToast('Foto eliminada — guarda los cambios');
+  mostrarToast('Eliminado — guarda los cambios');
 }
 
 function guardarGaleria() {
   var btn = document.getElementById('btnGuardar');
   btn.disabled = true;
   btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Guardando...';
-
-  // Guardar en localStorage como respaldo
   localStorage.setItem('naty_galeria', JSON.stringify(fotos));
-
-  // Crear el contenido del JSON
   var contenido = JSON.stringify(fotos, null, 2);
 
-  // Usar la API de GitHub para actualizar galeria.json
   var token = localStorage.getItem('naty_gh');
   if (!token) {
     token = prompt('Primera configuración:\nIngresa el código de acceso que te dio el administrador:');
@@ -226,7 +296,6 @@ function guardarGaleria() {
     localStorage.setItem('naty_gh', token);
   }
 
-  // Obtener SHA del archivo actual
   fetch('https://api.github.com/repos/porclaveeldobleerre/naty-paletas/contents/galeria.json', {
     headers: { 'Authorization': 'token ' + token, 'Accept': 'application/vnd.github.v3+json' }
   })
@@ -236,7 +305,7 @@ function guardarGaleria() {
       method: 'PUT',
       headers: { 'Authorization': 'token ' + token, 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        message: 'Actualizar galería desde panel',
+        message: 'Actualizar catálogo desde panel',
         content: btoa(unescape(encodeURIComponent(contenido))),
         sha: data.sha
       })
@@ -244,7 +313,7 @@ function guardarGaleria() {
   })
   .then(function(r) {
     if (r.ok) {
-      mostrarToast('✅ ¡Galería actualizada! El sitio se actualiza en ~1 minuto');
+      mostrarToast('✅ ¡Catálogo actualizado! El sitio se actualiza en ~1 minuto');
     } else {
       localStorage.removeItem('naty_gh');
       mostrarToast('❌ Error de permisos. Recarga e intenta de nuevo.');

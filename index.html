@@ -304,9 +304,20 @@
     <div class="section-header">
       <div class="section-tag">📸 Nuestros Productos</div>
       <h2 class="section-title">GALERÍA DE SABORES</h2>
+      <p class="section-sub">Conoce cada paleta — toca para ver más detalles</p>
     </div>
-    <div class="galeria-grid" id="galeriaGrid">
-      <!-- Las fotos se cargan desde galeria.json -->
+
+    <!-- Tabs de filtro -->
+    <div class="galeria-tabs">
+      <button class="gtab active" data-filter="all">🍡 Todas</button>
+      <button class="gtab" data-filter="agua">💧 De Agua</button>
+      <button class="gtab" data-filter="crema">🍦 De Crema</button>
+      <button class="gtab" data-filter="galeria">📷 Galería</button>
+    </div>
+
+    <!-- Grid de paletas -->
+    <div class="paletas-catalogo" id="galeriaGrid">
+      <!-- Se carga desde galeria.json -->
     </div>
   </div>
 </section>
@@ -417,6 +428,61 @@
   <i class="fab fa-whatsapp"></i>
 </a>
 
+<!-- ══ BOTÓN ADMIN GALERÍA (solo visible si hay sesión admin) ══ -->
+<button class="btn-admin-galeria" id="btnAdminGaleria" style="display:none;" onclick="abrirModalAdmin()">
+  <i class="fas fa-plus"></i>
+</button>
+
+<!-- ══ MODAL AGREGAR PALETA (admin) ══ -->
+<div class="modal-admin-overlay" id="modalAdminGaleria" style="display:none;" onclick="cerrarModalAdmin(event)">
+  <div class="modal-admin-box">
+    <div class="modal-admin-header">
+      <span>🍡 Agregar paleta al catálogo</span>
+      <button onclick="cerrarModalAdmin()" class="modal-close-btn"><i class="fas fa-times"></i></button>
+    </div>
+
+    <!-- Tipo -->
+    <div class="mad-group">
+      <label class="mad-label">Categoría</label>
+      <div class="mad-tipo-btns">
+        <button class="mad-tipo sel-agua" id="madAgua" onclick="madSelTipo('agua')">💧 De Agua</button>
+        <button class="mad-tipo" id="madCrema" onclick="madSelTipo('crema')">🍦 De Crema</button>
+        <button class="mad-tipo" id="madGaleria" onclick="madSelTipo('galeria')">📷 Galería</button>
+      </div>
+    </div>
+
+    <!-- Nombre -->
+    <div class="mad-group">
+      <label class="mad-label">Nombre del sabor</label>
+      <input type="text" id="madNombre" class="mad-input" placeholder="Ej: Limón, Oreo, Pay de Limón...">
+    </div>
+
+    <!-- Descripción -->
+    <div class="mad-group">
+      <label class="mad-label">Descripción (opcional)</label>
+      <input type="text" id="madDesc" class="mad-input" placeholder="Ej: Refrescante y natural">
+    </div>
+
+    <!-- Foto -->
+    <div class="mad-group">
+      <label class="mad-label">Foto de la paleta</label>
+      <div class="mad-upload" id="madUploadArea">
+        <input type="file" id="madFileInput" accept="image/*" onchange="madSubirFoto(this.files[0])">
+        <i class="fas fa-camera" style="font-size:1.8rem;color:#a855f7;margin-bottom:8px;display:block;"></i>
+        <span id="madUploadLabel">Toca para seleccionar foto</span>
+      </div>
+      <div class="mad-progress" id="madProgress" style="display:none;">
+        <div class="mad-progress-bar" id="madProgressBar"></div>
+      </div>
+    </div>
+
+    <button class="mad-btn-guardar" id="madBtnGuardar" onclick="madGuardar()">
+      <i class="fas fa-save"></i> Guardar en el catálogo
+    </button>
+    <div class="mad-status" id="madStatus"></div>
+  </div>
+</div>
+
 <script>
 window.addEventListener('scroll', function() {
   document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 60);
@@ -432,30 +498,194 @@ document.querySelectorAll('a[href^="#"]').forEach(function(a) {
   });
 });
 
-// ══ GALERÍA DINÁMICA ══
-fetch('galeria.json')
+// ══ GALERÍA DINÁMICA CON TABS ══
+var todasLasFotos = [];
+
+function renderGaleria(filtro) {
+  var grid = document.getElementById('galeriaGrid');
+  if (!grid) return;
+  var lista = filtro === 'all' ? todasLasFotos : todasLasFotos.filter(function(f) { return f.tipo === filtro; });
+  if (!lista.length) {
+    grid.innerHTML = '<div class="galeria-empty">No hay fotos en esta categoría aún.</div>';
+    return;
+  }
+  grid.innerHTML = lista.map(function(foto) {
+    var badgeClass = foto.tipo === 'agua' ? 'badge-agua' : foto.tipo === 'crema' ? 'badge-crema' : 'badge-galeria';
+    var badgeLabel = foto.tipo === 'agua' ? '💧 Agua' : foto.tipo === 'crema' ? '🍦 Crema' : '📷 Galería';
+    return '<div class="paleta-card" data-tipo="' + (foto.tipo||'galeria') + '">' +
+      '<div class="paleta-img-wrap">' +
+        '<img src="' + foto.imagen + '" alt="' + (foto.titulo||'') + '" ' +
+        'onerror="this.src=\'https://images.unsplash.com/photo-1615478503562-ec2d8aa0e24e?w=400&h=500&fit=crop&auto=format\'">' +
+        '<span class="paleta-badge ' + badgeClass + '">' + badgeLabel + '</span>' +
+      '</div>' +
+      '<div class="paleta-info">' +
+        '<div class="paleta-nombre">' + (foto.titulo||'') + '</div>' +
+        (foto.descripcion ? '<div class="paleta-desc">' + foto.descripcion + '</div>' : '') +
+      '</div>' +
+    '</div>';
+  }).join('');
+}
+
+fetch('galeria.json?t=' + Date.now())
   .then(function(r) { return r.json(); })
   .then(function(data) {
-    var fotos = Array.isArray(data) ? data : (data.fotos || []);
-    var grid = document.getElementById('galeriaGrid');
-    if (!grid || !fotos.length) return;
-    grid.innerHTML = fotos.map(function(foto, i) {
-      return '<div class="galeria-item' + (i === 0 ? ' grande' : '') + '">' +
-        '<img src="' + foto.imagen + '" alt="' + (foto.titulo || '') + '" ' +
-        'onerror="this.src=\'https://images.unsplash.com/photo-1587314168485-3236d6710814?w=600&h=400&fit=crop&auto=format\'">' +
-        '<div class="galeria-overlay"><span>' + (foto.titulo || '') + '</span></div>' +
-        '</div>';
-    }).join('');
+    todasLasFotos = Array.isArray(data) ? data : (data.fotos || []);
+    renderGaleria('all');
   })
   .catch(function() {
-    // Si falla el fetch, mostrar fotos por defecto
-    var grid = document.getElementById('galeriaGrid');
-    if (grid) grid.innerHTML =
-      '<div class="galeria-item grande"><img src="assets/naty-banner.jpeg" alt="Naty Paletas"><div class="galeria-overlay"><span>Naty Paletas y Helados</span></div></div>' +
-      '<div class="galeria-item"><img src="assets/naty-nina.jpeg" alt="Felicidad Naty"><div class="galeria-overlay"><span>😊 Sabores que alegran</span></div></div>' +
-      '<div class="galeria-item"><img src="assets/naty-menu.jpeg" alt="Menú Naty"><div class="galeria-overlay"><span>Nuestro Menú</span></div></div>' +
-      '<div class="galeria-item"><img src="assets/naty-flyer.png" alt="Mayoreo Naty"><div class="galeria-overlay"><span>Venta al Mayoreo</span></div></div>';
+    todasLasFotos = [
+      { imagen:'assets/naty-banner.jpeg', titulo:'Naty Paletas', tipo:'galeria', descripcion:'' },
+      { imagen:'assets/naty-nina.jpeg', titulo:'Sabores que alegran', tipo:'galeria', descripcion:'' },
+      { imagen:'assets/naty-menu.jpeg', titulo:'Nuestro Menú', tipo:'galeria', descripcion:'' }
+    ];
+    renderGaleria('all');
   });
+
+// Tabs
+document.querySelectorAll('.gtab').forEach(function(btn) {
+  btn.addEventListener('click', function() {
+    document.querySelectorAll('.gtab').forEach(function(b) { b.classList.remove('active'); });
+    btn.classList.add('active');
+    renderGaleria(btn.dataset.filter);
+  });
+});
+
+// ══ ADMIN GALERÍA ══
+var CLOUD_NAME_G = 'dfv1qc74g';
+var UPLOAD_PRESET_G = 'naty-galeria';
+var madTipo = 'agua';
+var madImagenUrl = '';
+
+// Mostrar botón solo si es admin
+(function() {
+  var auth = localStorage.getItem('auth');
+  var rol  = localStorage.getItem('userRol');
+  if (auth === 'true' && rol === 'admin') {
+    document.getElementById('btnAdminGaleria').style.display = 'flex';
+  }
+})();
+
+function abrirModalAdmin() {
+  document.getElementById('modalAdminGaleria').style.display = 'flex';
+  document.body.style.overflow = 'hidden';
+}
+
+function cerrarModalAdmin(e) {
+  if (e && e.target !== document.getElementById('modalAdminGaleria')) return;
+  document.getElementById('modalAdminGaleria').style.display = 'none';
+  document.body.style.overflow = '';
+  // reset
+  madImagenUrl = '';
+  madTipo = 'agua';
+  document.getElementById('madNombre').value = '';
+  document.getElementById('madDesc').value = '';
+  document.getElementById('madUploadLabel').textContent = 'Toca para seleccionar foto';
+  document.getElementById('madStatus').textContent = '';
+  madSelTipo('agua');
+}
+
+function madSelTipo(t) {
+  madTipo = t;
+  document.getElementById('madAgua').className   = 'mad-tipo' + (t==='agua'    ? ' sel-agua'    : '');
+  document.getElementById('madCrema').className  = 'mad-tipo' + (t==='crema'   ? ' sel-crema'   : '');
+  document.getElementById('madGaleria').className= 'mad-tipo' + (t==='galeria' ? ' sel-galeria'  : '');
+}
+
+function madSubirFoto(file) {
+  if (!file) return;
+  var label = document.getElementById('madUploadLabel');
+  var prog  = document.getElementById('madProgress');
+  var bar   = document.getElementById('madProgressBar');
+  label.textContent = 'Subiendo...';
+  prog.style.display = 'block';
+  bar.style.width = '0%';
+
+  var fd = new FormData();
+  fd.append('file', file);
+  fd.append('upload_preset', UPLOAD_PRESET_G);
+  fd.append('folder', 'naty-galeria');
+
+  var xhr = new XMLHttpRequest();
+  xhr.open('POST', 'https://api.cloudinary.com/v1_1/' + CLOUD_NAME_G + '/image/upload');
+  xhr.upload.onprogress = function(e) {
+    if (e.lengthComputable) bar.style.width = (e.loaded/e.total*100) + '%';
+  };
+  xhr.onload = function() {
+    prog.style.display = 'none';
+    if (xhr.status === 200) {
+      var res = JSON.parse(xhr.responseText);
+      madImagenUrl = res.secure_url;
+      label.textContent = '✅ ' + file.name;
+    } else {
+      label.textContent = '❌ Error al subir. Intenta de nuevo.';
+    }
+  };
+  xhr.onerror = function() { label.textContent = '❌ Error de conexión.'; };
+  xhr.send(fd);
+}
+
+function madGuardar() {
+  var nombre = document.getElementById('madNombre').value.trim();
+  var desc   = document.getElementById('madDesc').value.trim();
+  var status = document.getElementById('madStatus');
+  var btn    = document.getElementById('madBtnGuardar');
+
+  if (!nombre) { status.textContent = '⚠️ Escribe el nombre del sabor.'; status.style.color='#f59e0b'; return; }
+  if (!madImagenUrl) { status.textContent = '⚠️ Sube una foto primero.'; status.style.color='#f59e0b'; return; }
+
+  var token = localStorage.getItem('naty_gh');
+  if (!token) {
+    token = prompt('Ingresa el código de acceso GitHub:');
+    if (!token) return;
+    localStorage.setItem('naty_gh', token);
+  }
+
+  btn.disabled = true;
+  btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Guardando...';
+  status.textContent = '';
+
+  // Agregar al array local y guardar en GitHub
+  todasLasFotos.push({ imagen: madImagenUrl, titulo: nombre, tipo: madTipo, descripcion: desc });
+  var contenido = JSON.stringify(todasLasFotos, null, 2);
+
+  fetch('https://api.github.com/repos/porclaveeldobleerre/naty-paletas/contents/galeria.json', {
+    headers: { 'Authorization': 'token ' + token, 'Accept': 'application/vnd.github.v3+json' }
+  })
+  .then(function(r) { return r.json(); })
+  .then(function(data) {
+    return fetch('https://api.github.com/repos/porclaveeldobleerre/naty-paletas/contents/galeria.json', {
+      method: 'PUT',
+      headers: { 'Authorization': 'token ' + token, 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        message: 'Agregar paleta: ' + nombre,
+        content: btoa(unescape(encodeURIComponent(contenido))),
+        sha: data.sha
+      })
+    });
+  })
+  .then(function(r) {
+    if (r.ok) {
+      renderGaleria(document.querySelector('.gtab.active').dataset.filter);
+      status.style.color = '#22c55e';
+      status.textContent = '✅ ¡' + nombre + ' agregada! El sitio se actualiza en ~1 min.';
+      setTimeout(function() { cerrarModalAdmin(); }, 2000);
+    } else {
+      todasLasFotos.pop(); // revertir
+      localStorage.removeItem('naty_gh');
+      status.style.color = '#ef4444';
+      status.textContent = '❌ Error de permisos. Intenta de nuevo.';
+    }
+  })
+  .catch(function() {
+    todasLasFotos.pop();
+    status.style.color = '#ef4444';
+    status.textContent = '❌ Error de conexión.';
+  })
+  .finally(function() {
+    btn.disabled = false;
+    btn.innerHTML = '<i class="fas fa-save"></i> Guardar en el catálogo';
+  });
+}
 </script>
 
 <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
