@@ -499,7 +499,22 @@ document.querySelectorAll('a[href^="#"]').forEach(function(a) {
 });
 
 // ══ GALERÍA DINÁMICA CON TABS ══
-var todasLasFotos = [];
+var todasLasFotos = [
+  { imagen:'https://images.unsplash.com/photo-1615478503562-ec2d8aa0e24e?w=400&h=500&fit=crop&auto=format', titulo:'Limón', tipo:'agua', descripcion:'Refrescante y con el toque perfecto de limón natural' },
+  { imagen:'https://images.unsplash.com/photo-1627308595229-7830a5c91f9f?w=400&h=500&fit=crop&auto=format', titulo:'Fresa', tipo:'agua', descripcion:'Dulce y natural, hecha con fresas frescas' },
+  { imagen:'https://images.unsplash.com/photo-1590080875515-8a3a8dc5735e?w=400&h=500&fit=crop&auto=format', titulo:'Mango', tipo:'agua', descripcion:'Sabor tropical intenso de mango maduro' },
+  { imagen:'https://images.unsplash.com/photo-1568702846914-96b305d2aaeb?w=400&h=500&fit=crop&auto=format', titulo:'Sandía', tipo:'agua', descripcion:'Fresca y jugosa, perfecta para el calor' },
+  { imagen:'https://images.unsplash.com/photo-1497034825429-c343d7c6a68f?w=400&h=500&fit=crop&auto=format', titulo:'Tamarindo', tipo:'agua', descripcion:'Agridulce con el sabor único del tamarindo' },
+  { imagen:'https://images.unsplash.com/photo-1606313564200-e75d5e30476c?w=400&h=500&fit=crop&auto=format', titulo:'Chocolate', tipo:'crema', descripcion:'Cremosa y rica, para los amantes del chocolate' },
+  { imagen:'https://images.unsplash.com/photo-1627308595229-7830a5c91f9f?w=400&h=500&fit=crop&auto=format', titulo:'Fresa con Crema', tipo:'crema', descripcion:'La combinación perfecta de fresa y crema suave' },
+  { imagen:'https://images.unsplash.com/photo-1560008581-09826d1de69e?w=400&h=500&fit=crop&auto=format', titulo:'Vainilla', tipo:'crema', descripcion:'Clásica y deliciosa, suave y cremosa' },
+  { imagen:'https://images.unsplash.com/photo-1615478503562-ec2d8aa0e24e?w=400&h=500&fit=crop&auto=format', titulo:'Pay de Limón', tipo:'crema', descripcion:'El sabor del pay de limón en cada mordida' },
+  { imagen:'https://images.unsplash.com/photo-1606313564200-e75d5e30476c?w=400&h=500&fit=crop&auto=format', titulo:'Oreo', tipo:'crema', descripcion:'Cremosa con trozos de galleta Oreo' },
+  { imagen:'assets/naty-banner.jpeg', titulo:'Naty Paletas y Helados', tipo:'galeria', descripcion:'Nuestras deliciosas paletas artesanales' },
+  { imagen:'assets/naty-nina.jpeg', titulo:'Sabores que alegran', tipo:'galeria', descripcion:'😊 Así de felices nos ponen' },
+  { imagen:'assets/naty-menu.jpeg', titulo:'Nuestro Menú', tipo:'galeria', descripcion:'Variedad de sabores para todos' },
+  { imagen:'assets/naty-flyer.png', titulo:'Venta al Mayoreo', tipo:'galeria', descripcion:'Pedido mínimo 50 piezas' }
+];
 
 function renderGaleria(filtro) {
   var grid = document.getElementById('galeriaGrid');
@@ -527,17 +542,16 @@ function renderGaleria(filtro) {
 }
 
 fetch('galeria.json?t=' + Date.now())
-  .then(function(r) { return r.json(); })
+  .then(function(r) {
+    if (!r.ok) throw new Error('no ok');
+    return r.json();
+  })
   .then(function(data) {
-    todasLasFotos = Array.isArray(data) ? data : (data.fotos || []);
+    var arr = Array.isArray(data) ? data : (data.fotos || []);
+    if (arr.length) { todasLasFotos = arr; }
     renderGaleria('all');
   })
   .catch(function() {
-    todasLasFotos = [
-      { imagen:'assets/naty-banner.jpeg', titulo:'Naty Paletas', tipo:'galeria', descripcion:'' },
-      { imagen:'assets/naty-nina.jpeg', titulo:'Sabores que alegran', tipo:'galeria', descripcion:'' },
-      { imagen:'assets/naty-menu.jpeg', titulo:'Nuestro Menú', tipo:'galeria', descripcion:'' }
-    ];
     renderGaleria('all');
   });
 
@@ -688,18 +702,7 @@ function madGuardar() {
 }
 </script>
 
-<script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
-<script>
-  if (window.netlifyIdentity) {
-    window.netlifyIdentity.on("init", function(user) {
-      if (!user) {
-        window.netlifyIdentity.on("login", function() {
-          document.location.href = "/admin/";
-        });
-      }
-    });
-  }
-</script>
+
 </body>
 </html>
 
